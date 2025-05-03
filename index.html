@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tracing Vulnerabilities</title>
+    <!--https://www.w3schools.com/html/html_css.asp-->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!--https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_sidenav_fixed-->
+    <div class="sidenav">
+      <a onclick="loadPage('home.html')">Home</a>
+      <a onclick="loadPage('briefing_room.html')">Briefing Room</a>
+      <a onclick="loadPage('PTES.html')">About PTES</a>
+      <a onclick="loadPage('setup.html')">Setup</a>
+      <a onclick="loadPage('pre_engagement.html')">1. Pre-Engagement</a>
+      <a onclick="loadPage('gathering.html')">2. Intelligence Gathering</a>
+      <a onclick="loadPage('modelling.html')">3. Threat Modelling</a>
+      <a onclick="loadPage('analysis.html')">4. Vulnerability Analysis</a>
+      <a onclick="loadPage('exploitation.html')">5. Exploitation</a>
+      <a onclick="loadPage('post_exploitation.html')">6. Post-Exploitation</a>
+      <a onclick="loadPage('reporting.html')">7. Reporting</a>
+      <a onclick="loadPage('thankyou.html')">Thank You</a>
+      <a onclick="loadPage('BS.html')" style="font-size: 20px"
+        ><i>Behind The Scenes</i></a
+      >
+    </div>
+
+    <div class="header">
+      <img src="images/whitehathacker.png" alt="Logo" />
+    </div>
+
+    <div class="content">
+      <iframe id="contentFrame" src="home.html"></iframe>
+      <!--https://www.w3schools.com/tags/tag_iframe.asp-->
+
+      <footer class="footer">
+        <p>© GitHub/m4rika22 · 2025</p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+    <!--https://www.w3schools.com/html/html_scripts.asp
+    https://www.w3schools.com/jsref/prop_frame_src.asp-->
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<link rel="stylesheet" href="style.css" />
+<p
+  style="text-align: center; font-family: 'Courier New', monospace; color: gray"
+>
+  Setup
+</p>
+<h2>Setting Up Your Hacking Lab</h2>
+<h1>Build the Playground</h1>
+<p>
+  Before you dive into real attacks, you need a safe and controlled space to
+  practice. This lab setup includes:
+</p>
+
+<ul>
+  <li><b>VirtualBox</b> — to run virtual machines (VMs)</li>
+  <li><b>Kali Linux</b> — VM 1: your attacker system</li>
+  <li><b>DaVivianCode-Server</b> — VM 2: the vulnerable target</li>
+  <li><b>NAT Network</b> — our way to connect the machines together</li>
+</ul>
+
+<hr />
+
+<h3>1. Install VirtualBox</h3>
+<p>
+  Time to get our virtual lab rolling! Download and install VirtualBox from the
+  official site:
+  <br />
+  <a href="https://www.virtualbox.org" target="_blank"
+    >https://www.virtualbox.org</a
+  >
+</p>
+<p>
+  Not sure how to install it? No worries! Google has your back. And as long as
+  these links play along, here's one great option for Windows users:
+  <br />
+  <a href="https://www.youtube.com/watch?v=nwjZWHou8u0" target="_blank"
+    >How to Install Virtualbox on Windows</a
+  >
+</p>
+
+<hr />
+
+<h3>2. Get Kali Linux</h3>
+<p>
+  Now that VirtualBox is ready, it's time to bring in our hacking toolbox: Kali
+  Linux.
+</p>
+<p>
+  Head over to
+  <a href="https://www.kali.org" target="_blank"> kali.org </a>
+  and download the VirtualBox image.
+</p>
+<p>
+  Need help with the setup? Google will gladly assist — or check out this
+  helpful YouTube guide:
+  <br />
+  <a href="https://www.youtube.com/watch?v=B94XCbnmauQ" target="_blank">
+    How to Install Kali Linux on VirtualBox
+  </a>
+</p>
+<br />
+<p>
+  Heads up: Sometimes, things don't go as smoothly as in the video. If Kali
+  doesn't magically appear in VirtualBox after downloading, unzipping and
+  clicking, don't panic. (Like I did when it first happened.) Just import it
+  manually like we are also going to do in the next step:
+</p>
+<code>VirtualBox → File → Import Appliance -> Choose the right file</code>
+<p>That's it! You're almost there.</p>
+<hr />
+
+<h3>3. Import the Target Machine</h3>
+<p>
+  Ok, let's bring in our target! We'll be importing a pre-configured vulnerable
+  server that you'll be testing during the simulation.
+</p>
+<p>
+  The server is called <b>DaVivianCode-Server</b>, and it's waiting for you to
+  unleash your inner hacker. Download the virtual machine file (<b>.ova</b>)
+  below and import it into VirtualBox.
+</p>
+
+<div style="text-align: center; margin: 20px 0">
+  <a
+    href="https://drive.google.com/file/d/1YfbJQIzXjzAbu6blX-L-tQuD2e1RP_gc/view?usp=sharing"
+    target="_blank"
+  >
+    <button>Download Da Vivian Code Server (.ova)</button>
+  </a>
+</div>
+<p>Once downloaded:</p>
+<ol>
+  <li>Open VirtualBox</li>
+  <li>Go to <b>File → Import Appliance</b></li>
+  <img src="images/VB_Import.png" alt="Importing" />
+  <li>Select the downloaded file</li>
+  <li>Click <b>Finish</b></li>
+</ol>
+<p>
+  Smooth, right? You just added your target machine to the lab. Just like that.
+</p>
+<p>Right now we are here:</p>
+<img src="images/Virtualization.png" alt="Virtualization" width="50%" />
+<p>
+  On our host machine we're running VirtualBox—a Type-2 <b>hypervisor</b> and
+  <b>virtualization</b> platform—which hosts <b>two VMs</b>: Kali Linux and the
+  DaVivianCode-Server, which is very much an Ubuntu server.
+</p>
+<p>
+  Problem: Currently Kali and DaVivian are like party guests on opposite sides
+  of the room — time to connect the NAT network so they can mingle.
+</p>
+<hr />
+
+<h3>4. Create a NAT Network</h3>
+<p>
+  Alright, time for a little VirtualBox magic. This step lets Kali and our
+  target server finally talk to each other inside your lab.
+</p>
+<ol>
+  <li>Open VirtualBox → Click <b>Tools</b> → <b>Network</b></li>
+  <img src="images/VirtualBox_W.png" alt="VirtualBox" />
+  <li>Enable Network Adapter</li>
+  <li>Select <b>NAT Networks</b> → Click <b>+</b> to create a new one</li>
+  <li>
+    Give your network a nice name (Because why not? Mine is so lame. It's sad.)
+  </li>
+  <li>Set <b>IPv4</b> to something like: <b>192.168.30.0/24</b></li>
+  <li>Make sure <b>DHCP</b> is enabled</li>
+  <li>Click <b>Apply</b></li>
+  <img src="images/VirtualBox_NAT.png" alt="VirtualBox_NAT" />
+</ol>
+<p>
+  Nice! You've created your NAT network. But right now, your VMs are still like
+  “uh... what's happening?” So let's plug them into the network. If your VMs are
+  running, <b>power them off</b> first so we can adjust their settings safely.
+</p>
+<ol>
+  <li>Select <b>DaVivianCode-Server</b> in VirtualBox</li>
+  <li>Go to <b>Settings</b></li>
+  <li>Go to <b>Network</b></li>
+  <li>Choose <b>NAT Networks</b></li>
+  <li>Pick the NAT network you just created</li>
+  <li>Click <b>OK</b></li>
+  <img src="images/DaVivianNAT.png" alt="NetworkSettings" />
+  <li>Repeat the same for your Kali Linux machine</li>
+  <li>
+    Then hit that green <b>Start</b> button on both VMs and bring them back to
+    life
+  </li>
+</ol>
+<p>
+  Boom! Now both machines are on the same private network. They can chat with
+  each other, but they're cut off from the outside world. Perfect for our safe
+  and controlled hacking playground. Here's what your setup now looks like:
+</p>
+<img src="images/VirtualizationNAT.png" alt="NAT" width="50%" />
+<hr />
+
+<h3 style="text-align: center">All Set?</h3>
+<p style="text-align: center">Ok, we are good to go!</p>
+<div style="text-align: center; margin-top: 30px">
+  <a href="pre_engagement.html">
+    <button>Pre-Engagement</button>
+  </a>
+</div>

@@ -1,0 +1,139 @@
+<link rel="stylesheet" href="style.css" />
+<p
+  style="text-align: center; font-family: 'Courier New', monospace; color: gray"
+>
+  6. Reporting
+</p>
+<h3>You Know It — Report It!</h3>
+<h1>Reporting Your Findings</h1>
+<p>
+  &#x1F4DC; Now it's time to turn your findings into a clear report. Some of the
+  issues uncovered in this simulation would require professional expertise to
+  fully fix, but it is still important to keep the report as easy to read as
+  possible.
+</p>
+<br />
+
+<div class="contract-box">
+  <h2>Penetration Testing Report Summary</h2>
+  <div class="contract-content">
+    <b>TESTER:</b>
+    <p>You — ethical hacker extraordinaire.</p>
+
+    <b>CLIENT:</b>
+    <p>Da Vivian Code, represented by Vivian C.</p>
+
+    <b>OBJECTIVE:</b>
+    <p>
+      Identify security vulnerabilities in Da Vivian Code's website and server
+      infrastructure through simulated attacks and document the findings.
+    </p>
+
+    <b>KEY FINDINGS:</b>
+    <ul>
+      <li>Discovered valid WordPress user: <b>Vivian</b></li>
+      <li>The scan revealed misconfigured folders</li>
+      <li>Discovered a file with easily decoded passwords</li>
+      <li>
+        Image containing sensitive information in WordPress's Media folder
+      </li>
+      <li>
+        Brute-forced webadmin SSH login using <b>Metasploit</b> and a custom
+        wordlist
+      </li>
+      <li>Gained root access and retrieved sensitive customer data</li>
+    </ul>
+
+    <b>VULNERABILITIES IDENTIFIED:</b>
+    <ul>
+      <li>Exposed login portals (e.g., <b>/wp-login.php</b>)</li>
+      <li>Misconfigured file permissions and directory listing enabled</li>
+      <li>Weak SSH password (discovered via brute force)</li>
+    </ul>
+
+    <b>RISK IMPACT:</b>
+    <p>
+      Compromise of administrative accounts and access to confidential customer
+      records. Potential for major reputational damage if exploited by a real
+      attacker.
+    </p>
+
+    <b>RECOMMENDATIONS:</b>
+    <ul>
+      <li>
+        <b>Implement strong password policies and two-factor authentication:</b>
+        Prevent brute-force attacks even if credentials are guessed.
+      </li>
+      <li>
+        <b>Deploy Fail2Ban or similar protection:</b> Automatically detect and
+        block repeated login attempts over SSH or WordPress.
+      </li>
+      <li>
+        <b>Remove outdated or sensitive files from public directories:</b>
+        Files like <b>readme.html</b> can leak information.
+      </li>
+      <li>
+        <b>Disable unnecessary services:</b>
+        Minimizes attack surface.
+      </li>
+      <li>
+        <b>Limit SSH access:</b> Restrict by IP if possible, or move to
+        non-default ports.
+      </li>
+      <li>
+        <b>Conduct regular vulnerability scans and patch outdated services:</b>
+        Especially web servers, WordPress core, themes, and plugins.
+      </li>
+    </ul>
+    <b>ATTACHMENTS:</b>
+    <p>sv-scan.txt, o-scan.txt, Screenshot_2025.png</p>
+
+    <b>OVERALL SEVERITY:</b>
+    <p>
+      <b style="color: darkred">HIGH</b> — Immediate security improvements are
+      recommended
+    </p>
+  </div>
+</div>
+<br />
+<br />
+<div
+  style="
+    background-color: #e7f3fe;
+    padding: 10px;
+    border-left: 4px solid #2196f3;
+  "
+>
+  <p>
+    <b>Note:</b> This summary gives you a basic idea of how a report might look
+    after a penetration test. In real-world engagements, professional reports
+    are often several pages long and include detailed technical data, attack
+    paths, timelines, screenshots, and mitigation steps.
+  </p>
+  <p>
+    They are not just a checklist — they are documents that help organizations
+    improve their security posture.
+  </p>
+  <p>
+    <b>Pro Tip:</b> The recommendations in your report are often called
+    <b>hardenings</b>. You can find excellent hardening guides by searching
+    online for terms like "Linux hardening checklist", "WordPress hardening",
+    "Ubuntu fail2ban" etc. Try applying some of them and then run your scanners
+    again — it's a great way to see the difference! You also found files and
+    folders that are better off deleted completely.
+  </p>
+
+  <p>
+    And don't worry if something breaks — this is a simulation. You can always
+    reload your environment and start fresh.
+  </p>
+</div>
+<p style="margin-top: 30px; text-align: center">
+  Ready to wrap it up? Click below to complete your mission.
+</p>
+
+<div style="text-align: center; margin-top: 30px">
+  <a href="thankyou.html">
+    <button>I CONFIRM REPORT DELIVERY</button>
+  </a>
+</div>

@@ -1,0 +1,443 @@
+<link rel="stylesheet" href="style.css" />
+<p
+  style="text-align: center; font-family: 'Courier New', monospace; color: gray"
+>
+  4. Vulnerability Analysis
+</p>
+
+<h3>Looking for Weak Spots</h3>
+<h1>Vulnerability Analysis</h1>
+
+<p>
+  In this phase, you go hunting for weaknesses. Not just guessing — now you use
+  actual tools to identify flaws in the system that could be exploited by an
+  attacker.
+</p>
+<h3>Some important theory</h3>
+<p>
+  There are many good tools for vulnerability scanning. Before we get into a few
+  of them, let's get familiar with some important terms when it comes to
+  vulnerability analysis.
+</p>
+
+<p>Vulnerabilities can appear in many forms:</p>
+
+<ul>
+  <li>
+    &#x1F4BB;<b> Software vulnerabilities:</b> like XSS and SQL injection.
+  </li>
+  <li>
+    &#x2699;&#xFE0F;<b>Configuration flaws:</b> weak passwords, missing encryption, excessive
+    permissions.
+  </li>
+  <li>&#x1F50C;<b>Hardware flaws:</b> physical-level issues (rare, but real).</li>
+  <li>
+    &#x1F9E0;
+<b>Social vulnerabilities:</b> human errors or tricks (phishing, bad
+    practices).
+  </li>
+</ul>
+
+<h4>CVE — The Vulnerability Encyclopedia</h4>
+
+<p>
+  CVEs (<b>Common Vulnerabilities and Exposures</b>) are unique IDs for known security
+  flaws. On this path, you will come across these things often. In real-world testing, 
+  spotting a known CVE can feel like finding a name tag on your bug. It means others have 
+  seen it, rated it, maybe even written an exploit for it — and now, you're part of that 
+  story too. This is how CVE entries look like:</p>
+</p>
+<img src="images/CVE.png" alt="CVE" />
+
+<p>You see, the year is 2033 — so clearly, we're going back to the future. What 
+  secrets does this timeline hold? Could this be the very vulnerability YOU have 
+  uncovered? That moment when nerds ask, “Do you have a CVE?” — and you casually 
+  say, “Yes.”</p>
+
+<h4>CVSS — Common Vulnerability Scoring System</h4>
+<p>How critical is your CVE discovery? We don't know it yet, but that's where 
+  CVSS scoring comes in. CVSS gives each vulnerability a number from 0 to 10, 
+  based on how much trouble it could cause. The higher the score, the scarier 
+  the bug. Think of it as the danger meter for your findings.</p>
+  <img src="images/CVSS.png" alt="CVSS" />
+  <p>Okay, let's say your CVE discovery scores a lucky number <b>7.7</b>. What does 
+    that mean? It means you've just hit a high-risk vulnerability. Congratulations! 
+    And thoughts and prayers for the system where you found the vulnerability.</p>
+
+<h3>What About OWASP?</h3>
+<p>
+  So you're finding vulnerabilities, assigning them CVE numbers, and scoring their 
+  danger level with CVSS. But how do you know what types of issues are most common
+   — and most dangerous — in real-world web apps? That's where OWASP Top 10 comes 
+   in.</p>
+  <p>OWASP (<b>Open Web Application Security Project</b>) is a non-profit project that keeps 
+    track of the nastiest web application vulnerabilities. Their Top 10 list is basically 
+    a cheat sheet of the bugs attackers love and defenders fear.
+</p>
+<p>I recommend you to take a closer look: <a href="https://owasp.org/Top10/" target="_blank" rel="noopener noreferrer">
+  OWASP Top 10
+</a></p>
+
+
+<h3>Always Be Careful with Scan Results</h3>
+<p>
+  Not all vulnerabilities found are exploitable. And most importantly, not all
+  exploitable vulnerabilities are found by scanners. We are talking about 
+  these results:
+</p>
+
+<p>
+  &#x1F941; <b>False Positive: </b>Scanner reports a vulnerability that isn't really
+  there. Wastes time, but doesn't put the system at risk.
+</p>
+<p>
+  &#x1F648;&#x2757; <b>False Negative: </b>Scanner fails to detect a real vulnerability.
+  <b>Serious risk</b> — attacker may find it before you do.
+</p>
+<p>
+  Scanning is great — but not enough. Penetration testing is essential.
+</p>
+<br />
+<hr />
+<br />
+<h2>Start Scanning!</h2>
+<p>
+  Now it's time to get hands-on. Run the following scans on your target server
+  and take notes on what you find. I'll guide with the results and we will put
+  some of the theory we just covered into practice.
+</p>
+
+<h4>WPScan (for WordPress):</h4>
+<p>
+  WPScan is a specialized scanner for WordPress. It checks for known
+  vulnerabilities, outdated plugins, and weak passwords. It's definitely a 
+  tool worth trying when targeting WordPress. Here, try this command in your 
+  Kali Linux terminal:</p>
+
+<code>wpscan --url http://192.168.30.6 --enumerate vp</code>
+<p>
+  Okay, let's see what we have. Your results may not be identical, but these 
+  are the kinds of findings you can expect:
+</p>
+<ul>
+  <li>
+    <b>Server: Apache/2.4.58 (Ubuntu)</b><br />
+    This tells us what web server is running. Knowing the version can help
+    identify possible vulnerabilities.
+  </li>
+
+  <li>
+    <b>XML-RPC enabled</b><br />
+    This WordPress feature allows remote commands. 
+  </li>
+
+  <li>
+    <b>readme.html found</b><br />
+    Confirms that the site is running WordPress and may leak the version number
+    to attackers.
+  </li>
+
+  <li>
+    <b>wp-cron.php active</b><br />
+    This is WordPress's background task manager. If not secured, it can be 
+    exploited to overload the server or slow down the site.
+  </li>
+
+  <li>
+    <b>Theme: Twenty Twenty-Four (v1.3)</b><br />
+    Identifies the active theme. Outdated or poorly coded themes can contain
+    vulnerabilities.
+  </li>
+
+  <li>
+    <b>Directory listing is enabled</b><br />
+    This allows anyone to view the file structure of a folder, which may expose
+    sensitive files.
+  </li>
+
+  <li>
+    <b>No WPScan API Token provided</b><br />
+    That's on you — the key wasn't given. Without it, the scanner can't fetch 
+    detailed vulnerability data, including CVEs when available.
+  </li>
+</ul>
+<p>
+  Getting an API key for WPScan is simple and something you might want to try later. 
+  But we'll skip it now to save time. What matters here is this: there's a dedicated 
+  scanner just for WordPress. I recommend you to explore its possibilities. And I'm 
+  also going to introduce one more specific scan, which will be very exciting 
+  for us in the next step.
+</p>
+<p><b>To find possible WordPress usernames, use the command:</b></p>
+<code>wpscan --url http://192.168.30.6 --enumerate u</code>
+<p>
+  As you scroll through the results, you should come across a less surprising
+  discovery: the username <b>Vivian</b>. Take a note of this — it might help 
+  you during login attempts.
+</p>
+<hr />
+<p><b>🔍 Tip:</b> You can manually check if a service or version is known 
+  to be vulnerable.</p>
+
+<p>For example, we've found:</p>
+
+<code>Apache 2.4.58</code>
+
+<p>
+  Want to know more? </p>
+  <ol><li>Head over to the 
+  <a href="https://nvd.nist.gov/" target="_blank">NIST National Vulnerability Database (NVD)</a>.</li> 
+  <li>Use the <b>CPE Search</b> feature to look up <em>Apache 2.4.58</em>
+  <img src="images/NIST_CPE.png" alt="NIST_CPE" /></li>
+  <li>Choose <b>View CVEs</b></li>
+   <li>See a list of related <b>CVEs</b> (vulnerability entries) with their <b>CVSS scores</b>:
+    <img src="images/NIST_CVEs.png" alt="NIST_CV" /></li>
+</ol>
+
+<p>
+  This kind of manual lookup is especially useful when:
+  <ul>
+    <li>You're not using automation tools</li>
+    <li>You want to double-check what a scan found</li>
+    <li>You're curious how real vulnerabilities are documented and scored</li>
+  </ul>
+</p>    
+
+<br />
+<hr />
+<br />
+<h3>Let's Dig Deeper with Nmap!</h3>
+<p>
+  We've already looked at some basic scans, but now it's time to <b>dig 
+    into vulnerabilities</b>. This time, we'll use Nmap's powerful scripting 
+    engine to check if the target has any known weak spots.
+</p>
+
+<code>sudo nmap -sV --script vuln 192.168.30.6</code>
+
+<p>
+  This command doesn't just list open ports — it also <b>checks if those 
+    services are known to be vulnerable</b>. It's like asking: “Hey, has 
+    this software ever had a security issue?” 🕵️
+</p>
+
+<h4>&#x1F9E0; What Did We Find?</h4>
+<p>At first glance, this scan might look like a wall of text. The good news is: 
+  we only need to pick out a few important signals from the noise. Many of the 
+  elements you've seen in earlier scans appear here as well. Here's a summary 
+  of the interesting things that probably popped up:</p>
+
+  <ul>
+    <li>
+      &#x2705; <b>Open Ports</b>
+      <ul>
+        <li>Port <b>22 (SSH)</b> and <b>80 (HTTP)</b> are open.</li>
+        <li>These are like open doors — they allow remote login (SSH) and web traffic (HTTP).</li>
+        <li>That also makes them <b>potential entry points</b> for attackers.</li>
+      </ul>
+    </li>
+  
+    <li>
+      &#x26A0;&#xFE0F; <b>Vulnerabilities Detected</b>
+      <ul>
+        <li>The <b>SSH service</b> has several <b>critical vulnerabilities</b> 
+          — some rated <b>10/10</b> on the severity scale! That's <b>CVSS</b> 
+          in action.</li>
+        <li>The <b>web server</b> (Apache 2.4.58) also has multiple <b>high-risk 
+          issues</b>.</li>
+      </ul>
+    </li>
+  
+    <li>
+      &#x1F4A5; <b>Exploits Exist</b>
+      <ul>
+        <li>Many of these vulnerabilities have <b>public exploits</b> — ready-made attack 
+          code available online.</li>
+        <li>This means the system could be <b>easy to attack</b>, especially if it's unpatched.</li>
+      </ul>
+    </li>
+  
+    <li>
+      &#x1F310; <b>WordPress Revealed</b>
+      <ul>
+        <li>The site is running <b>WordPress</b>, and we found a username: 
+          <b>“vivian”</b>.</li>
+        <li>There's a possible <b>CSRF vulnerability</b> (sneaky commands accepted without 
+          user permission).</li>
+        <li>An <b>internal IP address</b> (<b>127.0.1.1</b>) was leaked — sign of 
+          <b>misconfiguration</b>.</li>
+      </ul>
+    </li>
+  
+    <li>
+      &#x1F4C2; <b>Bonus: Interesting Files and Folders</b>
+      <ul>
+        <li><b>/wp-login.php</b> — Admin login page</li>
+        <li><b>/readme.html</b> — Confirms WordPress is used</li>
+        <li><b>/images/</b> — Directory listing enabled</li>
+        <li>Also: traces of <b>very old WordPress files</b> 
+          (like versions 2.2 to 2.7). Even if they're not active, they might still 
+          be exploitable.</li>
+      </ul>
+    </li>
+  </ul>
+
+<p>&#x2705; <b>In Summary</b></p>
+<p>
+  This scan didn't open any doors for us — <b>yet</b>. But it showed us:
+</p>
+<ul>
+  <li>A valid <b>login username</b></li>
+  <li>Signs of <b>misconfigured settings</b></li>
+  <li>Several <b>known vulnerabilities</b>, with real exploits available</li>
+</ul>
+<p>
+  We've seen <b>cracks in the wall</b>, and that's exactly what we need for the next step.
+  Let's keep going. &#x1F50D;
+</p>
+
+<br />
+<hr />
+<br />
+<h3>And then there is Nikto</h3>
+<p>
+  Now that we've scanned for open ports and known vulnerabilities, let's try something new: 
+  <b>Nikto</b> is a web server scanner — it checks websites for 
+  <b>common issues and misconfigurations</b>.
+</p>
+
+<code>nikto -h http://192.168.30.6</code>
+
+<p>Let's take a look at what it found.</p>
+
+<h4>&#x1F9E0; What Did We Learn from Nikto?</h4>
+
+<ul>
+  <li>
+    &#x2699;&#xFE0F; <b>Missing Security Headers</b>
+    <ul>
+      <li>No <b>X-Frame-Options</b></li>
+      <li>No <b>X-Content-Type-Options</b></li>
+      <li>These small headers help browsers protect users from basic web-based attacks.</li>
+    </ul>    
+  </li>
+
+  <li>
+    &#x1F6E0;&#xFE0F; <b>Web Server Behavior</b>
+    <ul>
+      <li>Server returns a valid response with junk HTTP methods. This may cause false positives.</li>
+      <li><b>/images/</b> has <b>directory listing enabled</b></li>
+    </ul>
+  </li>
+
+  <li>
+    &#x1F5C2;&#xFE0F; <b>Interesting Files and Paths like:</b>
+    <ul>
+      <li><b>/wp-links-opml.php</b></li>
+      <li><b>/license.txt</b> may reveal software details.</li>
+    </ul>
+  </li>
+
+  <li>
+    &#x1F310; <b>WordPress Confirmed Again</b>
+    <ul>
+      <li>WordPress detected</li>
+      <li>Login page found: <b>/wp-login.php</b></li>
+    </ul>
+  </li>
+</ul>
+
+
+<h4>&#x2705; In Summary</h4>
+<p>
+  Nikto didn't find anything catastrophic, but it showed us several 
+  <b>common misconfigurations</b> worth cleaning up:
+</p>
+<ul>
+  <li>Missing security headers</li>
+  <li>Files leaking system info</li>
+  <li>Open folders</li>
+  <li>More WordPress exposure</li>
+</ul>
+<p>
+  All in all, it's a helpful second opinion — and every piece adds to our full picture of the target.
+</p>
+
+  <br />
+  <hr />
+  <br />
+  <h3>Bonus: Nessus Vulnerability Scanner &#x1F916;</h3>
+
+  <p>
+    While there are many scanners out there, Nessus stands out for its easy-to-use interface and clear results. 
+  </p>
+  
+  <p><b>Important:</b> Nessus is not pre-installed on Kali Linux, so you'll need to install and set it up first. 
+    Based on experience, this process can take a bit of time.</p>
+  
+  <h4>Installation Steps:</h4>
+  <p>Here's a good Nessus installation guide for Kali Linux:</p>
+    <p><a href="https://mwaseemaw.medium.com/nessus-installation-in-kali-linux-2f0cbae39b64" target="_blank">Nessus 
+        Installation in Kali Linux by  Mohammed Waseem</a></p>
+    <p>If you decide to try this scanner yourself, be patient. Once the scanner is available, 
+      it's really easy to use. Just:</p>
+  <ul>
+    <li>Choose <b>New Scan</b> → <b>Basic Network Scan</b></li>
+    <li>Enter your target IP (<b>192.168.30.6</b>)</li>
+    <li>Start the scan and wait for the results</li>
+  </ul>
+  
+  <p>
+    Nessus will list vulnerabilities by severity (Low, Medium, High, Critical), and each finding links to 
+    a CVE with more info. It also suggests how to fix them — great for learning!
+  </p>
+  <p>
+    Nessus uses the <b>CVSS scoring system</b> automatically to rate the severity of each vulnerability it finds. 
+    You'll see scores from <b>0 to 10</b>, color-coded by risk level. This makes it easier to prioritize the most 
+    dangerous vulnerabilities.
+  </p>
+  <p>This is what the Basic Scan results currently look like:</p>
+  <br />
+  <img src="images/Nessus.png" alt="Nessus scan" />
+  <br />
+  <p>Looks nice, right? Enjoy the peaceful colors while you can — scan something like 
+    Metasploitable in the future and watch this pie chart turn into a full-blown cyber 
+    crime scene.</p>
+    <p>Over time, our target machine itself might become more vulnerable, because software ages. 
+      That's actually part of the lesson: systems need updates to stay secure.</p>
+  <p>Don't be fooled by short lists. One entry might hide several vulnerabilities under the 
+    hood — like in our Apache case here:</p>
+    <br />
+    <img src="images/Nessus2.png" alt="Nessus_Apache" />
+    <br />
+  <p>Nessus reports things clearly and even offers suggested fixes — pretty great, right? 
+    But don't let the clean layout fool you. Like all automated scanners, Nessus isn't perfect. 
+    False positives and false negatives are a real thing. While writing my thesis, I came 
+    across a study showing that Nessus missed up to 69% of tested vulnerabilities. Always review 
+    the results carefully and verify important findings manually.
+  </p>
+<br />
+<hr />
+<br />
+<div style="background-color: #f2f2f2; padding: 10px; border-left: 4px solid #00bfff;">
+    <h4>Recap: What We Did in Vulnerability Analysis</h4>
+    <ul>
+      <li>Learned key terms like CVE, CVSS, and the concept of false positives/negatives</li>
+      <li>Explored OWASP Top 10 as a guide for web application vulnerabilities</li>
+      <li>Scanned the target using <b>WPScan</b> and found WordPress version, login paths, and a username</li>
+      <li>Manually checked for known vulnerabilities using <b>NIST CPE Search</b></li>
+      <li>Used <b>Nmap's vuln script</b> to find weak points, misconfigurations, and internal IP leakage</li>
+      <li>Ran <b>Nikto</b> to detect missing headers, exposed files, and cookie flaws</li>
+      <li>Got an optional look at <b>Nessus</b> for deeper vulnerability scanning</li>
+    </ul>
+    <p><b>Conclusion:</b> We now have a solid understanding of what's potentially vulnerable. In the next phase, 
+      we'll try to turn these discoveries into real access!</p>
+  </div>
+<br />
+<p style="text-align: center;">Ok, let's move on. Next stop:</p>
+<div style="text-align: center; margin-top: 30px">
+  <a href="exploitation.html">
+    <button>Exploitation</button>
+  </a>
+</div>
+

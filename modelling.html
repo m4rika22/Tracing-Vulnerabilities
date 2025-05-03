@@ -1,0 +1,181 @@
+<link rel="stylesheet" href="style.css" />
+<p
+  style="text-align: center; font-family: 'Courier New', monospace; color: gray"
+>
+  3. Threat Modelling
+</p>
+
+<h3>Think Like an Attacker</h3>
+<h1>Master Threat Modeling</h1>
+<p>
+  You've scanned the target. You've identified open ports, services, and OS
+  details. Now comes the fun part: <b>thinking like the enemy.</b>
+</p>
+<p>
+  This phase is called <b>threat modeling</b>. It's all about asking questions
+  like:
+</p>
+<ul>
+  <li>Who might attack this system?</li>
+  <li>What are they after?</li>
+  <li>How would they get in?</li>
+</ul>
+<p>
+  By stepping into the attacker's shoes, you can focus your efforts on the risks
+  that matter most.
+</p>
+
+<h3>The Cyber Kill Chain: A Map of the Attack</h3>
+<p>
+  One beginner-friendly way to model threats is the <b>Cyber Kill Chain</b>,
+  developed by Lockheed Martin. It breaks a cyberattack into 7 logical stages —
+  from initial recon to final impact.
+</p>
+
+<p>
+  <a
+    href="https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html"
+    target="_blank"
+  >
+    Learn more from Lockheed Martin
+  </a>
+</p>
+
+<p>Here's a quick breakdown of what the Cyber Kill Chain includes:</p>
+
+<ol>
+  <li><b>Reconnaissance:</b> Gathering info (like you did with Nmap).</li>
+  <li><b>Weaponization:</b> Crafting an exploit, malware, or phishing kit.</li>
+  <li><b>Delivery:</b> Sending the payload via email, link, or website.</li>
+  <li>
+    <b>Exploitation:</b> Triggering the exploit — for example, using a known
+    vulnerability.
+  </li>
+  <li><b>Installation:</b> Installing malware for persistent access.</li>
+  <li>
+    <b>Command and Control (C2):</b> Gaining remote control of the system.
+  </li>
+  <li>
+    <b>Actions on Objectives:</b> Stealing data, damaging systems, or causing
+    disruption.
+  </li>
+</ol>
+
+<img src="images/KillChainForWebSite.png" alt="KillChain" />
+
+<h4>Why It Matters</h4>
+<p>The kill chain helps defenders identify where to intervene. For example:</p>
+<ul>
+  <li>Can you detect early reconnaissance attempts?</li>
+  <li>Can you block malicious payloads during delivery?</li>
+  <li>Can you monitor and stop C2 traffic?</li>
+</ul>
+
+<p>
+  Even if you're just training,
+  <b
+    >thinking like a real attacker sharpens your skills as an ethical hacker.</b
+  >
+</p>
+
+<h3>Build Your First Threat Model</h3>
+<p>
+  Based on what you've discovered so far, you're ready to sketch a simple threat
+  model for the target system.
+</p>
+
+<p>Let's review your earlier findings:</p>
+<ul>
+  <li>Open ports: SSH (22), HTTP (80)</li>
+  <li>Web server: WordPress</li>
+  <li>OS: Linux-based</li>
+</ul>
+
+<p>Now ask yourself:</p>
+<ul>
+  <li>What would a real attacker try to achieve?</li>
+  <li>Where are the likely weak spots?</li>
+  <li>Which tools or exploits might work here?</li>
+</ul>
+
+<p>
+  Try to imagine how an attacker would move step-by-step through the kill chain
+  toward their objective.
+</p>
+
+<div
+  style="
+    margin: 20px auto;
+    background-color: #f0f0f0;
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+  "
+>
+  <h3 style="text-align: center">🛡️ Simple Threat Model: 192.168.30.6</h3>
+  <ul>
+    <li>
+      <b>Target:</b> Linux server running Apache and WordPress, SSH enabled
+    </li>
+    <li><b>Open Ports:</b> 22 (SSH), 80 (HTTP)</li>
+    <li>
+      <b>Potential Threats:</b>
+      <ul>
+        <li>Weak SSH credentials</li>
+        <li>WordPress vulnerabilities</li>
+        <li>Information disclosure via HTTP (e.g., <b>/wp-admin</b>)</li>
+      </ul>
+    </li>
+    <li>
+      <b>Attacker's View:</b> High visibility, common entry points, easy recon
+    </li>
+    <li>
+      <b>Possible Next Steps:</b>
+      <ul>
+        <li>Run <b>wpscan</b> to check WordPress issues</li>
+        <li>Use <b>nikto</b> to look for web server vulnerabilities</li>
+        <li>Attempt SSH login if credentials are weak or known</li>
+      </ul>
+    </li>
+    <li>
+      <b>Potential Attackers:</b>
+      <ul>
+        <li>Amateur hackers looking for low-hanging fruit</li>
+        <li>
+          Hacktivists targeting cultural institutions or public visibility
+        </li>
+        <li>
+          Automated bots scanning for known WordPress or SSH vulnerabilities
+        </li>
+      </ul>
+    </li>
+    <li>
+      <b>Attacker Motivation:</b>
+      <ul>
+        <li>Changing the site's appearance as a form of protest or activism</li>
+        <li>Using server as part of a botnet</li>
+        <li>Stealing sensitive data (visitor info, login credentials)</li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<h4>Don't Aim for Perfect — Aim for Progress</h4>
+<p>
+  This is just a starting point. Your threat model doesn't need to be perfect —
+  what matters is that you're practicing a new way of thinking. You're
+  connecting what you've scanned to how someone might exploit it. That mindset
+  shift is what makes you dangerous — in a good way.
+</p>
+<p>
+  In fact, threat modeling is often one of the most time-consuming parts of
+  penetration testing — and right now, we're only scratching the surface.
+</p>
+
+<p>Ready? Time to move from theory to testing.</p>
+<div style="text-align: center; margin-top: 30px">
+  <a href="analysis.html">
+    <button>Vulnerability Analysis</button>
+  </a>
+</div>

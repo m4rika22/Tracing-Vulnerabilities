@@ -1,0 +1,362 @@
+<link rel="stylesheet" href="style.css" />
+<p
+  style="text-align: center; font-family: 'Courier New', monospace; color: gray"
+>
+  2. Intelligence Gathering
+</p>
+
+<h3>Know Your Target</h3>
+<h1>Collecting Valuable Intel</h1>
+
+<p>Welcome to the point where real penetration testing begins!</p>
+<p>
+  According to PTES — and let's be honest, just plain logic — the first phase of
+  any penetration test is information gathering, also known as reconnaissance.
+  Before jumping into scanning ports or exploiting systems, it's crucial to
+  understand the environment.
+</p>
+<br />
+<hr />
+<br />
+<h3>Step 1: Consider what we already know</h3>
+
+<p>
+  We have a virtualization platform, VirtualBox, on which we have installed Kali
+  Linux and a target machine, DaVivianCode-Server. We want to perform a
+  penetration test on the gallery's:
+</p>
+<ul>
+  <li>website</li>
+  <li>server</li>
+</ul>
+<p>
+  That's pretty much all information we have at the moment. Let's change that!
+</p>
+<br />
+<hr />
+<br />
+<h3>Step 2: What's my IP?</h3>
+<p>
+  Your first mission is simple: find out your Kali Linux machine's IP address.
+  Use the following command in the terminal:
+</p>
+<code>ip a</code>
+<p>If everything went as expected, you should see something like this:</p>
+<img src="images/ip_a.png" alt="ip_a" />
+<p>
+  Look for the IP address next to the network interface <b>eth0</b>. This is the
+  IP address of your Kali machine.
+</p>
+<p>
+  Understanding who you are and where you stand in the network is always the
+  first step in hacking — know yourself before you know the enemy. Well,
+  technically speaking, Da Vivian Code Gallery is not our enemy, we act like the
+  enemy online, but you get the idea.
+</p>
+<br />
+<hr />
+<br />
+<h3>Step 3: Find other hosts using Netdiscover</h3>
+<p>
+  Once you know your own address, you can search the network for other devices.
+  Type this command into the terminal:
+</p>
+<code>sudo netdiscover </code>
+<p>
+  Netdiscover sends ARP requests to find active hosts. Soon after running the
+  command, you should see a list of devices on the network:
+</p>
+<img src="images/netdiscover.png" alt="netdiscover" />
+<p>
+  <b>TIP: </b>At this stage, take the discovered IP addresses and test them in
+  your Kali Linux browser!
+</p>
+<img src="images/browser.png" alt="browser" style="width: 60%; height: auto" />
+<p>
+  If a website opens, congratulations — you've just identified a web server, and
+  it looks like your target. This is a simple but powerful trick: sometimes the
+  easiest way to recognize a service is just to visit it. Now you know which IP
+  runs the website you were asked to test. This will be important in the next
+  steps of your simulation.
+</p>
+<p>
+  No results? Make sure you are using http connection. If you just enter
+  192.168.30.6 or your browser tries to use https:// automatically, the page
+  might not load — even if the server is actually running. Here, have this:
+</p>
+<code>http://192.168.30.6</code>
+<p>
+  <b>NOTE: </b> Since IP addresses are assigned dynamically by DHCP, the target
+  system may have a different IP address than the one shown in these examples.
+  Be sure to replace the example IP (192.168.30.6) with the one you actually
+  discover using Netdiscover.
+</p>
+<br />
+<hr />
+<br />
+<h3>Step 4: Passive Information Gathering — Using Public Sources</h3>
+<p>
+  Open-source intelligence (OSINT) is a goldmine for hackers. It's the art of
+  collecting information from publicly available sources. It might sound basic,
+  but it's incredibly powerful. You'd be surprised how much you can learn about:
+</p>
+<ul>
+  <li>Domain names</li>
+  <li>Server types</li>
+  <li>Email addresses</li>
+  <li>Social media patterns</li>
+  <li>Leaked data</li>
+  <li>etc...</li>
+</ul>
+<p>
+  There are plenty tools for OSINT research. Let us try this simple
+  <b>whois</b> experiment. I'll spoil the surprise for you right away: by
+  examining the IP address of the DaVivianCode-Server, we don't find much. So,
+  let's do it for Google.
+</p>
+<code>whois google.com</code>
+<p>
+  After running the command, you should see a lot of information about the
+  domain, including the registrar, the domain's expiration date, and the name
+  servers.
+</p>
+<p>
+  If you run <b>whois</b> on your target's private IP (192.168.30.6), you'll get
+  a notice that it's part of a private range — meaning it's not traceable via
+  public databases.
+</p>
+<br />
+<hr />
+<br />
+<h3>Step 5: Active Information Gathering — Meet the Almighty Nmap</h3>
+<p>Nmap is your new best friend. It helps identify:</p>
+<ul>
+  <li>Open ports</li>
+  <li>Running services</li>
+  <li>What Operating Systems (OS) the target might be using</li>
+</ul>
+<p>
+  <b>BUT. </b>There's always a but. And when it comes to Nmap, it's a big one.
+  Since I'm teaching this to you, I can't stress this enough:
+</p>
+<p style="color: red"><b>Never, ever Nmap without permission.</b></p>
+<p>
+  If you run a scan on, say, your bank's website
+  <i>"just to see what's there,"</i> you might soon find yourself explaining
+  your curiosity to the police. Seriously. Nmap is a great tool, but it's only
+  meant for responsible use. It's also noisy. It won't go unnoticed, you'll get
+  caught.
+  <b>You have been warned.</b>
+</p>
+<p>
+  Scared enough yet? Nah, don't worry. You have broad permission to scan and
+  explore Da Vivian Code Gallery's server and website. And even if you overstep
+  your privileges a little — say, by practicing something like installing a
+  backdoor — nothing bad will happen. This is a training environment — a game.
+  However, I recommend that you follow the script to learn the most important
+  rule in real-life pen testing: <b>stick to the contract.</b>
+</p>
+<br />
+<hr />
+<br />
+<p>
+  OK, back to our mission! Now that you've found your target's IP address, it's
+  time to actually learn something about the system. And that's where Nmap truly
+  shines.
+</p>
+
+<p>
+  Let's kick things off with a basic scan — no extra options, just the
+  essentials:
+</p>
+
+<p>
+  <b>Basic TCP scan:</b> This checks which ports on the target are open and
+  listening.
+</p>
+
+<code>nmap 192.168.30.6</code>
+
+<p>And there it is — our very first Nmap result! &#x1F389;</p>
+
+<img src="images/Nmap_basic.png" alt="Nmap" />
+
+<p>
+  Not too scary, right? No overwhelming wall of text — just a clean,
+  beginner-friendly output. It proves to you that I'm a kind simulator designer.
+  Or maybe I just didn't have time to make it more complex.
+</p>
+
+<p>
+  Even though the results are short, they already reveal a lot of useful
+  information.
+</p>
+
+<h3>&#x1F9E0; What Can We Learn?</h3>
+
+<ul>
+  <li>
+    <b>The host is up:</b> The target responded to our scan — it's online and
+    reachable.
+  </li>
+
+  <li>
+    <b>Two open ports detected:</b>
+    <ul>
+      <li>
+        <b>Port 22 (SSH)</b> — used for remote access via the command line.
+      </li>
+      <li>
+        <b>Port 80 (HTTP)</b> — indicates a web server is running (like a
+        website).
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <b>Most other ports are closed:</b> Nmap reported that 998 TCP ports are
+    closed. This means the system has a minimal attack surface — which is a good
+    sign in terms of security.
+  </li>
+
+  <li>
+    <b>The system is virtualized:</b> The MAC address matches Oracle VirtualBox,
+    suggesting the target is a virtual machine.
+  </li>
+</ul>
+
+<p>
+  &#x1F4A1; These are common services and can be great entry points for further
+  exploration or analysis. Lesson to Learn: Just because the output is short
+  doesn't mean it's useless. Sometimes fewer results just mean less noise — and
+  that helps you focus.
+</p>
+<br />
+<hr />
+<br />
+<h3>&#x1F50E; Comparing Nmap Scan Results</h3>
+
+<p>
+  Reading scan results can be tricky at first — but now that you've run your
+  first basic Nmap scan, let's take it a step further. This time, we'll not only
+  scan — we'll also save the results for later use.
+</p>
+<h4>Step 1: Choose The Scanners</h4>
+<p>
+  Let's pick two different types of Nmap scans to explore. Out of Nmap's many
+  possibilities, we're going with <b>-sV</b> and <b>-O</b>. Why these two?
+  Because they give us more detail — and also, because I said so. OK, let's take
+  a closer look:
+</p>
+<p>
+  <b>Version detection (nmap -sV)</b> tries to find out what service (and which
+  version) is running on each open port. Let's run and save this scan.
+</p>
+
+<code>nmap -sV 192.168.30.6 > sv-scan.txt</code>
+
+<p>You can view the saved results by reading the txt file you just created:</p>
+
+<code>cat sv-scan.txt</code>
+
+<p>&#x261D; Before we analyze anything, let's add one more scan to the mix.</p>
+<p>
+  <b>OS detection (nmap -O)</b> tries to identify what operating system the
+  target is running:
+</p>
+
+<code>nmap -O 192.168.30.6 > o-scan.txt</code>
+
+<p>Again, use <b>cat</b> to check the output.</p>
+<p>
+  Look at your results and think about how they differ from each other. Next, we
+  will compare them together, using one very handy tool.
+</p>
+
+<h4>Step 2: Compare with diff</h4>
+<p>
+  While <b>diff</b> isn't usually thought of as a pentesting tool, it's actually
+  super handy. We can use it to compare scan results and quickly see what's new
+  or different. At this point we focus on what's different, with this simple
+  command:
+</p>
+
+<code>diff sv-scan.txt o-scan.txt</code>
+
+<p>
+  The diff tool will highlight any differences between the scan results, helping
+  you understand what each scan reveals.
+</p>
+<p>
+  Easy, right? Probably not, when you're just starting out in this business. But
+  that's okay — we'll walk through it together, with this image:
+</p>
+<img src="images/Diff1.png" alt="diff1" />
+<br />
+<p>
+  <b>Key Takeaway:</b> Different Nmap options reveal different types of
+  information. This comparison shows why it's important to choose the right scan
+  depending on what you want to find out. <b>Diff</b> is a great tool for
+  quickly spotting those differences. It's also useful for tracking changes over
+  time — for example, if you run the same scan regularly and want to see what
+  has changed.
+</p>
+<p>
+  And now you also know how to save your scan results as files! This is super
+  useful for later analysis or reporting.
+</p>
+<br />
+<hr />
+<br />
+<h4>Nmap -A — The All-In-One Scan</h4>
+<p>
+  Now you know that it is possible to use Nmap for targeted results. But if you
+  want, it is possible to get everything at once! There is a tool for that:
+</p>
+<p>
+  This command is like asking Nmap to <i>"show me everything you've got."</i> It
+  enables:
+</p>
+<ul>
+  <li>OS detection</li>
+  <li>Version detection</li>
+  <li>Script scanning</li>
+  <li>Traceroute</li>
+</ul>
+<p>Here we go:</p>
+<code>sudo nmap -A 192.168.30.6</code>
+<p>
+  After running the command, you should see a lot of information about the
+  target system. While <b>your results may differ slightly</b>, you might
+  already notice some familiar elements from previous scans. I've highlighted a
+  few details in this image that are worth paying attention to:
+</p>
+<img src="images/nmapA.png" alt="nmap_a" />
+<p>
+  Great job! We already know much more about our target than when we started.
+  Finally, let's summarize what we learned so far.
+</p>
+
+<div
+  style="
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-left: 4px solid #00bfff;
+  "
+>
+  <h4>In this section we learned the following things:</h4>
+  <ul>
+    <li>Identified our own IP address</li>
+    <li>Discovered other hosts in the network with Netdiscover</li>
+    <li>Tested target IP in browser</li>
+    <li>Used Whois to investigate public info</li>
+    <li>Ran different Nmap scans and compared their outputs</li>
+  </ul>
+</div>
+<br />
+<p>Okay, take a little break before we move on to the next step, which is:</p>
+<div style="text-align: center; margin-top: 30px">
+  <a href="modelling.html">
+    <button>Threat Modelling</button>
+  </a>
+</div>
